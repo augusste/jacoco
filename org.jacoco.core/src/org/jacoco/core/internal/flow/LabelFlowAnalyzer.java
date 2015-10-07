@@ -54,11 +54,6 @@ public final class LabelFlowAnalyzer extends MethodVisitor {
 	boolean first = true;
 
 	/**
-	 * Label instance of the last line start.
-	 */
-	Label lineStart = null;
-
-	/**
 	 * Create new instance.
 	 */
 	public LabelFlowAnalyzer() {
@@ -96,11 +91,6 @@ public final class LabelFlowAnalyzer extends MethodVisitor {
 		if (successor) {
 			LabelInfo.setSuccessor(label);
 		}
-	}
-
-	@Override
-	public void visitLineNumber(final int line, final Label start) {
-		lineStart = start;
 	}
 
 	@Override
@@ -184,7 +174,6 @@ public final class LabelFlowAnalyzer extends MethodVisitor {
 			final String name, final String desc, final boolean itf) {
 		successor = true;
 		first = false;
-		markMethodInvocationLine();
 	}
 
 	@Override
@@ -192,13 +181,6 @@ public final class LabelFlowAnalyzer extends MethodVisitor {
 			final Handle bsm, final Object... bsmArgs) {
 		successor = true;
 		first = false;
-		markMethodInvocationLine();
-	}
-
-	private void markMethodInvocationLine() {
-		if (lineStart != null) {
-			LabelInfo.setMethodInvocationLine(lineStart);
-		}
 	}
 
 	@Override
